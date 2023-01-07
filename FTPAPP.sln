@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32819.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FTPAPP", "FTPAPP\FTPAPP.csproj", "{CAF613AA-25EE-4C9F-9FD0-EEF6DBD6C283}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CAF613AA-25EE-4C9F-9FD0-EEF6DBD6C283}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAF613AA-25EE-4C9F-9FD0-EEF6DBD6C283}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAF613AA-25EE-4C9F-9FD0-EEF6DBD6C283}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAF613AA-25EE-4C9F-9FD0-EEF6DBD6C283}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EBD5E718-CF6B-4562-A03A-7A97B5DB8953}
+	EndGlobalSection
+EndGlobal
