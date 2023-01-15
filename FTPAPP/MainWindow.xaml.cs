@@ -23,6 +23,34 @@ namespace FTPAPP
         public MainWindow()
         {
             InitializeComponent();
+            FTP_Client client = new FTP_Client("ftp://komphort.ru/", 30000, false);
+            if(client.CreateRequest())
+                Data.ItemsSource = client.ListDirectory();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }
