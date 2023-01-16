@@ -116,6 +116,11 @@ namespace FTPAPP
             return newList;
         }
 
+        private string Combine(string file_name)
+        {
+            return _host + "/" + file_name;
+        }
+
         private string[] RemoveSpaces(string[] line)
         {
             List<string> newline = new List<string>(); 
@@ -162,31 +167,36 @@ namespace FTPAPP
             }
         }
 
-        public bool DownloadFile(string source, string size)
+        public bool DownloadFile(string source, string size, string file_name)
         {
             try
             {
                 var buffer = new byte[Convert.ToInt32(size)];
-
-                var request = MakeRequest(WebRequestMethods.Ftp.DownloadFile);
-
-                using (var resonse = (FtpWebResponse)request.GetResponse())
+                var path = Combine(file_name);
+                Authorization();
+                if (CreateRequest(path))
                 {
-                    using (var stream = resonse.GetResponseStream())
+                    var request = MakeRequest(WebRequestMethods.Ftp.DownloadFile);
+                    using (var resonse = (FtpWebResponse)request.GetResponse())
                     {
-                        using (var filestream = new FileStream(source, FileMode.OpenOrCreate))
+                        using (var stream = resonse.GetResponseStream())
                         {
-                            int readCount = stream.Read(buffer, 0, Convert.ToInt32(size));
-
-                            while (readCount > 0)
+                            using (var filestream = new FileStream(source+file_name, FileMode.OpenOrCreate))
                             {
-                                filestream.Write(buffer, 0, readCount);
-                                readCount = stream.Read(buffer, 0, Convert.ToInt32(size));
+                                int readCount = stream.Read(buffer, 0, Convert.ToInt32(size));
+
+                                while (readCount > 0)
+                                {
+                                    filestream.Write(buffer, 0, readCount);
+                                    readCount = stream.Read(buffer, 0, Convert.ToInt32(size));
+                                }
                             }
                         }
                     }
+                    return true;
                 }
-                return true;
+                else
+                    return false;
             }
             catch
             {

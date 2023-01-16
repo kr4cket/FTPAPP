@@ -25,14 +25,19 @@ namespace FTPAPP
         public MainWindow()
         {
             InitializeComponent();
-            _Client = new FTP_Client("ftp://komphort.ru/", 30000, false);
+            string temp = "ftp://komphort.ru/";
+            _Client = new FTP_Client("ftp://ftp.equation.com", 30000, false);
             if(_Client.CreateRequest())
                 Data.ItemsSource = _Client.ListDirectory();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            if (_Client.CreateRequest())
+            {
+                DataFile file = (DataFile)Data.SelectedItem;
+                _Client.DownloadFile("D:\\", file.file_size, file.file_name);
+            }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
