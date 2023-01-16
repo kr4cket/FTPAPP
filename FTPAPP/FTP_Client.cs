@@ -15,6 +15,7 @@ namespace FTPAPP
         private readonly string _host;
         private readonly string _user;
         private readonly string _password;
+        private string _path;
         private int _bufferSize;
         private int _timeout;
         private bool _ssl;
@@ -39,6 +40,19 @@ namespace FTPAPP
             try
             {
                 _webRequest = (FtpWebRequest)WebRequest.Create(_host);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool CreateRequest(string path)
+        {
+            try
+            {
+                _webRequest = (FtpWebRequest)WebRequest.Create(path);
                 return true;
             }
             catch
@@ -95,7 +109,8 @@ namespace FTPAPP
             {
                 var line = oldList[i].Split(' ');
                 line = RemoveSpaces(line);
-                DataFile dataFile = new DataFile(line[4], line[8], line[1]);
+                // File_size File_name File_type
+                DataFile dataFile = new DataFile(line[0], line[1], line[2]);
                 newList.Add(dataFile);
             }
             return newList;
@@ -109,8 +124,42 @@ namespace FTPAPP
                 if (!(line[i] == ""))
                     newline.Add(line[i]);
             }
+            for(int i = 9; i < newline.Count; i++)
+            {
+                newline[8] += " ";
+                newline[8] += newline[i];
+            }
+            newline.Add(GetFileType(newline[8]));
+            return new string[] { newline[4], newline[8], newline[newline.Count-1] };
+        }
 
-            return newline.ToArray();
+        private string GetFileType(string file_name)
+        {
+            var line = file_name.Split('.');
+            if (line.Length == 1)
+                    return "dir";
+            else
+                return line[line.Length - 1];
+        }
+
+        public List<DataFile> ChangeDirectory(string file_name)
+        {
+            try
+            {
+                string directoryPath = _host + '/' + file_name;
+                if (CreateRequest(directoryPath))
+                {
+                    return ListDirectory();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public bool DownloadFile(string source, string size)

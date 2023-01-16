@@ -28,6 +28,27 @@
             </Setter>
             <Setter Property="BorderThickness" Value="10"/>
         </Style>
+        <Style x:Key="BlueButton_Bottom" TargetType="Button">
+            <Setter Property="Control.FontFamily" Value="Arial Black" />
+            <Setter Property="Control.FontSize" Value="17" />
+            <Setter Property="Control.Foreground" Value="White" />
+            <Setter Property="Control.Margin" Value="5" />
+            <Setter Property="Control.Background" Value="Blue" />
+            <Setter Property="ClickMode" Value="Press"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="15"
+                                Background="{TemplateBinding Background}">
+
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderThickness" Value="10"/>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -36,12 +57,17 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="0.4*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="4.25*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <ListView Grid.Column="1" Grid.Row="1" Grid.RowSpan="4" SelectionChanged="ListView_SelectionChanged" Name="Data">
+        <ListView Grid.Column="1" Grid.Row="1" Grid.RowSpan="4" Grid.ColumnSpan="5"  Name="Data" IsSynchronizedWithCurrentItem="True" MouseDoubleClick="Data_MouseDoubleClick">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=file_name}" Width="100">Имя файла</GridViewColumn>
@@ -52,11 +78,9 @@
             <ListView.Resources>
             </ListView.Resources>
         </ListView>
-        <Button Grid.Column="0" Grid.Row="1" Style="{StaticResource BlueButton}" Content="Add File" Click="Button_Click">
-
-        </Button>
-        <Button Grid.Column="0" Grid.Row="2" Style="{StaticResource BlueButton}" Content="Load File" Click="Button_Click_1">
-        </Button>
+        <Button Grid.Column="5" Grid.Row="5" Style="{StaticResource BlueButton_Bottom}" Content="Back" Click="Button_Click_4"/>
+        <Button Grid.Column="0" Grid.Row="1" Style="{StaticResource BlueButton}" Content="Add File" Click="Button_Click"/>
+        <Button Grid.Column="0" Grid.Row="2" Style="{StaticResource BlueButton}" Content="Load File" Click="Button_Click_1"/>
         <Button Grid.Column="0" Grid.Row="3" Style="{StaticResource BlueButton}" Content="Settings" Click="Button_Click_2"/>
         <Button Grid.Column="0" Grid.Row="4" Style="{StaticResource BlueButton}" Content="Log Out" Click="Button_Click_3" />
     </Grid>

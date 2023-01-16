@@ -20,12 +20,14 @@ namespace FTPAPP
     /// </summary>
     public partial class MainWindow : Window
     {
+        private FTP_Client _Client;
+        private string _tempPath;
         public MainWindow()
         {
             InitializeComponent();
-            FTP_Client client = new FTP_Client("ftp://komphort.ru/", 30000, false);
-            if(client.CreateRequest())
-                Data.ItemsSource = client.ListDirectory();
+            _Client = new FTP_Client("ftp://komphort.ru/", 30000, false);
+            if(_Client.CreateRequest())
+                Data.ItemsSource = _Client.ListDirectory();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -47,10 +49,17 @@ namespace FTPAPP
         {
 
         }
-
-        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Button_Click_4(object sender, RoutedEventArgs e)
         {
+            if (_Client.CreateRequest())
+                Data.ItemsSource = _Client.ListDirectory();
+        }
 
+        private void Data_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            DataFile file = (DataFile)Data.SelectedItem;
+            if(file.file_type == "dir")
+                Data.ItemsSource = _Client.ChangeDirectory(file.file_name);
         }
     }
 }
