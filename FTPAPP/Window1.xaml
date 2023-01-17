@@ -5,9 +5,33 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FTPAPP"
         mc:Ignorable="d"
-        Title="Window1" Height="450" Width="800">
+        Title="Авторизация" Height="400" Width="300">
     <Grid>
-        <Border BorderBrush="Black" BorderThickness="1"/>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.25*" />
+			<RowDefinition Height="0.25*" />
+		    <RowDefinition Height="0.25*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+		
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+	    </Grid.ColumnDefinitions>
+ 
+		<TextBlock Text ="Введите адрес сервера" Grid.Row ="0" Grid.Column="0"/>
+        <TextBox Name="serverBox" Grid.Row="0" Grid.Column="1" MinWidth="250">Пароль</TextBox>
+		
+		<TextBlock Text ="Введите логин" Grid.Row ="1" Grid.Column="0"/>
+        <TextBox Name="userBox" Grid.Row="1" Grid.Column="1" MinWidth="250">Пароль</TextBox>
+		
+        <TextBlock Text ="Введите пароль" Grid.Row ="2" Grid.Column="0"/>
+        <TextBox Name="passwordBox" Grid.Row="2" Grid.Column="1" MinWidth="250">Пароль</TextBox>
+ 
+        <WrapPanel Grid.Row="3" HorizontalAlignment="Right" Margin="0,15,0,0">
+            <Button IsDefault="True" Click="Accept_Click" MinWidth="60" Margin="0,0,10,0">OK</Button>
+            <Button IsCancel="True" MinWidth="60">Отмена</Button>
+        </WrapPanel>
+ 
     </Grid>
 </Window>

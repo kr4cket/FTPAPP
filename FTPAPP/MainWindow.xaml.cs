@@ -24,10 +24,25 @@ namespace FTPAPP
         private FTP_Client _Client;
         public MainWindow()
         {
-            InitializeComponent();
-            _Client = new FTP_Client("ftp://ftp.equation.com", 30000, false);
-            if(_Client.CreateRequest())
-                Data.ItemsSource = _Client.ListDirectory();
+            Window1 passwordWindow = new Window1();
+ 
+            if(passwordWindow.ShowDialog()==true)
+            {
+                _Client = new FTP_Client(passwordWindow.Server, 30000, false, passwordWindow.Login, passwordWindow.Password);
+                if(_Client.CreateRequest() && _Client.Authorization())
+                {
+                    InitializeComponent();
+                    MessageBox.Show("Авторизация пройдена");
+                    Data.ItemsSource = _Client.ListDirectory();
+                }
+                else
+                    MessageBox.Show("Неверный пароль");
+            }
+            else
+            {
+                MessageBox.Show("Авторизация не пройдена");
+            }
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

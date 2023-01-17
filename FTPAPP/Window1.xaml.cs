@@ -23,5 +23,24 @@ namespace FTPAPP
         {
             InitializeComponent();
         }
+        private void Accept_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = true;
+        }
+ 
+        public string Password
+        {
+            get { return passwordBox.Text; }
+        }
+
+        public string Login
+        {
+            get { return userBox.Text; }
+        }
+
+        public string Server
+        {
+            get { return serverBox.Text; }
+        }
     }
 }
