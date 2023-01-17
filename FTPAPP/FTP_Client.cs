@@ -16,6 +16,7 @@ namespace FTPAPP
         private readonly string _user;
         private readonly string _password;
         private string _path;
+        private string _temp;
         private int _bufferSize;
         private int _timeout;
         private bool _ssl;
@@ -32,7 +33,7 @@ namespace FTPAPP
             _ssl = ssl;
             _passive = true;
             _binary = false;
-            
+            _path = _host;
         }
 
         public bool CreateRequest()
@@ -53,6 +54,7 @@ namespace FTPAPP
             try
             {
                 _webRequest = (FtpWebRequest)WebRequest.Create(path);
+                _path = path;
                 return true;
             }
             catch
@@ -109,6 +111,7 @@ namespace FTPAPP
             {
                 var line = oldList[i].Split(' ');
                 line = RemoveSpaces(line);
+
                 // File_size File_name File_type
                 DataFile dataFile = new DataFile(line[0], line[1], line[2]);
                 newList.Add(dataFile);
@@ -118,7 +121,7 @@ namespace FTPAPP
 
         private string Combine(string file_name)
         {
-            return _host + "/" + file_name;
+            return _path + "/" + file_name;
         }
 
         private string[] RemoveSpaces(string[] line)
@@ -151,7 +154,28 @@ namespace FTPAPP
         {
             try
             {
-                string directoryPath = _host + '/' + file_name;
+                string directoryPath = _path + '/' + file_name;
+                _temp = '/' + file_name;
+                if (CreateRequest(directoryPath))
+                {
+                    return ListDirectory();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public List<DataFile> BackDirectory()
+        {
+            try
+            {
+                string directoryPath = _path.Substring(0,_path.Length - _temp.Length);
                 if (CreateRequest(directoryPath))
                 {
                     return ListDirectory();
@@ -181,7 +205,7 @@ namespace FTPAPP
                     {
                         using (var stream = resonse.GetResponseStream())
                         {
-                            using (var filestream = new FileStream(source+file_name, FileMode.OpenOrCreate))
+                            using (var filestream = new FileStream(source, FileMode.OpenOrCreate))
                             {
                                 int readCount = stream.Read(buffer, 0, Convert.ToInt32(size));
 

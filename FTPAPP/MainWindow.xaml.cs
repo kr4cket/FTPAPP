@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,11 +22,9 @@ namespace FTPAPP
     public partial class MainWindow : Window
     {
         private FTP_Client _Client;
-        private string _tempPath;
         public MainWindow()
         {
             InitializeComponent();
-            string temp = "ftp://komphort.ru/";
             _Client = new FTP_Client("ftp://ftp.equation.com", 30000, false);
             if(_Client.CreateRequest())
                 Data.ItemsSource = _Client.ListDirectory();
@@ -33,16 +32,25 @@ namespace FTPAPP
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (_Client.CreateRequest())
-            {
-                DataFile file = (DataFile)Data.SelectedItem;
-                _Client.DownloadFile("D:\\", file.file_size, file.file_name);
-            }
+
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            if (_Client.CreateRequest())
+            {
+                string path = "";
+                DataFile file = (DataFile)Data.SelectedItem;
 
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string fileName = saveFileDialog.FileName;
+                    path = fileName;
+                }
+
+                _Client.DownloadFile(path + '.' + file.file_type, file.file_size, file.file_name);
+            }
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
@@ -57,7 +65,7 @@ namespace FTPAPP
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             if (_Client.CreateRequest())
-                Data.ItemsSource = _Client.ListDirectory();
+                Data.ItemsSource = _Client.BackDirectory();
         }
 
         private void Data_MouseDoubleClick(object sender, MouseButtonEventArgs e)
