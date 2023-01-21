@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,25 +25,35 @@ namespace FTPAPP
         private FTP_Client _Client;
         public MainWindow()
         {
+            AuthorizationWind();
+        }
+
+        private void AuthorizationWind()
+        {
+            CheckBox:
             Window1 passwordWindow = new Window1();
- 
-            if(passwordWindow.ShowDialog()==true)
+
+            if (passwordWindow.ShowDialog() == true)
             {
                 _Client = new FTP_Client(passwordWindow.Server, 30000, false, passwordWindow.Login, passwordWindow.Password);
-                if(_Client.CreateRequest() && _Client.Authorization())
+                if (_Client.CreateRequest() && _Client.Authorization())
                 {
                     InitializeComponent();
                     MessageBox.Show("Авторизация пройдена");
                     Data.ItemsSource = _Client.ListDirectory();
                 }
                 else
+                {
                     MessageBox.Show("Неверный пароль");
+                    this.Hide();
+                    goto CheckBox;
+                }
             }
             else
             {
                 MessageBox.Show("Авторизация не пройдена");
+                Close();
             }
-
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -75,8 +86,10 @@ namespace FTPAPP
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-
+            Hide();
+            AuthorizationWind();
         }
+
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             if (_Client.CreateRequest())
